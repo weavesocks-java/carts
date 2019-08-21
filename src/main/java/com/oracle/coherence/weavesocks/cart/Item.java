@@ -1,45 +1,33 @@
-package works.weave.socks.cart.entities;
+package com.oracle.coherence.weavesocks.cart;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import java.io.Serializable;
+import java.util.Objects;
 
-import javax.validation.constraints.NotNull;
-
-@Document
-public class Item {
-    @Id
-    private String id;
-
-    @NotNull(message = "Item Id must not be null")
+public class Item implements Serializable {
     private String itemId;
     private int quantity;
     private float unitPrice;
 
-    public Item(String id, String itemId, int quantity, float unitPrice) {
-        this.id = id;
+    public Item(String itemId, int quantity, float unitPrice) {
         this.itemId = itemId;
         this.quantity = quantity;
         this.unitPrice = unitPrice;
     }
 
     public Item() {
-        this(null, "", 1, 0F);
+        this("", 1, 0F);
     }
 
     public Item(String itemId) {
-        this(null, itemId, 1, 0F);
+        this(itemId, 1, 0F);
     }
 
-    public Item(Item item, String id) {
-        this(id, item.itemId, item.quantity, item.unitPrice);
+    public Item(Item item) {
+        this(item.itemId, item.quantity, item.unitPrice);
     }
 
     public Item(Item item, int quantity) {
-        this(item.id(), item.itemId, quantity, item.unitPrice);
-    }
-
-    public String id() {
-        return id;
+        this(item.itemId, quantity, item.unitPrice);
     }
 
     public String itemId() {
@@ -53,8 +41,7 @@ public class Item {
     @Override
     public String toString() {
         return "Item{" +
-                "id='" + id + '\'' +
-                ", itemId='" + itemId + '\'' +
+                "itemId='" + itemId + '\'' +
                 ", quantity=" + quantity +
                 ", unitPrice=" + unitPrice +
                 '}';
@@ -67,18 +54,15 @@ public class Item {
 
         Item item = (Item) o;
 
-        return itemId != null ? itemId.equals(item.itemId) : item.itemId == null;
+        return Objects.equals(itemId, item.itemId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(itemId);
     }
 
     // ****** Crappy getter/setters for Jackson JSON invoking ********
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getItemId() {
         return itemId;
