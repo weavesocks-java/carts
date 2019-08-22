@@ -1,0 +1,29 @@
+apiVersion: coherence.oracle.com/v1
+kind: CoherenceCluster
+metadata:
+  namespace: weavesocks
+  name: weavesocks
+spec:
+  replicas: 1
+  readinessProbe:
+    initialDelaySeconds: 10
+    periodSeconds: 10
+  images:
+    coherence:
+      image: oracle/coherence:12.2.1.4.0-b74630
+  service:
+    externalPort: 7001
+  javaOpts: "-Dcoherence.management.http=none -Dcoherence.metrics.http.enabled=false"
+  roles:
+    - role: carts
+      images:
+        userArtifacts:
+          image: weavesocks/carts:1.0.0
+      cacheConfig: coherence-cache-config.xml
+      logging:
+        configFile: logging.properties
+      maxHeap: 64m
+      jvmArgs: "-XX:+UseG1GC"
+      ports:
+        http: 7001
+

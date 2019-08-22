@@ -2,7 +2,7 @@
 
 set -ev
 
-export BUILD_VERSION="0.0.2-SNAPSHOT"
+export BUILD_VERSION="1.0.0-SNAPSHOT"
 export BUILD_DATE=`date +%Y-%m-%dT%T%z`
 
 SCRIPT_DIR=$(dirname "$0")
