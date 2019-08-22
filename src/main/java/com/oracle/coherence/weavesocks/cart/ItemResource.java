@@ -73,9 +73,8 @@ public class ItemResource {
     }
 
     @PATCH
-    @Path("{itemId}")
     @Consumes(APPLICATION_JSON)
-    public Response updateItem(@PathParam("itemId") String itemId, Item item) {
+    public Response updateItem(Item item) {
         carts.invoke(cart.customerId, entry -> {
             Cart cart = entry.getValue();
             entry.setValue(cart.update(item));
