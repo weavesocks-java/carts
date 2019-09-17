@@ -3,10 +3,14 @@ package com.oracle.coherence.weavesocks.cart;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.oracle.io.pof.annotation.Portable;
+import com.oracle.io.pof.annotation.PortableType;
+
+@PortableType(id = 1)
 public class Item implements Serializable {
-    private String itemId;
-    private int quantity;
-    private float unitPrice;
+    @Portable private String itemId;
+    @Portable private int quantity;
+    @Portable private float unitPrice;
 
     public Item(String itemId, int quantity, float unitPrice) {
         this.itemId = itemId;
