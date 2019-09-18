@@ -2,6 +2,7 @@ package com.oracle.coherence.weavesocks.cart;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -24,13 +25,20 @@ import io.grpc.MethodDescriptor;
 @ApplicationScoped
 @GrpcMarshaller("carts")
 public class CartService {
+    private static final Logger LOGGER = Logger.getLogger(CartService.class.getName());
+
     @Inject
     private NamedCache<String, Cart> carts;
 
     @Unary
     public CartResponse getCart(String cartId) {
+        LOGGER.info("--> CartService.getCart: " + cartId);
+
         Cart cart = carts.get(cartId);
-        return new CartResponse(cart);
+        CartResponse response = new CartResponse(cart);
+
+        LOGGER.info("<-- CartService.getCart: " + response);
+        return response;
     }
 
     // ---- inner class: CartResponse ---------------------------------------
